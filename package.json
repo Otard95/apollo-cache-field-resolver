@@ -1,0 +1,26 @@
+{
+  "name": "apollo-cache-field-resolver",
+  "version": "0.0.1",
+  "description": "A wrapper for your apollo graphql resolvers that uses your cache hints to cache the field",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Otard95/apollo-cache-field-resolver.git"
+  },
+  "keywords": [
+    "graphql",
+    "apollo",
+    "gql",
+    "resolver",
+    "cache"
+  ],
+  "author": "Stian Myklebostad (https://github.com/Otard95)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Otard95/apollo-cache-field-resolver/issues"
+  },
+  "homepage": "https://github.com/Otard95/apollo-cache-field-resolver#readme"
+}
