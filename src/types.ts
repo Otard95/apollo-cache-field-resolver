@@ -31,4 +31,3 @@ export interface CacheOptions<
   sessionId?: string | ((context: C) => string)
   cache?: KeyValueCache | ((context: C) => KeyValueCache)
 }
-

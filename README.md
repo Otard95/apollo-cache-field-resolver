@@ -30,4 +30,7 @@ For example:
  1. For `__resolveReference` fields use `@key` directives `fields` argument.
     to get it from parent.
  1. For any other case assume args contains the `fields` of the `@key` directive.
+   - Better solution for later could be recursively looking through the input ast
+     to find a single field with type `ID!`, and/or finding a key `id` or
+     containing `id`(respecting snake/camel etc. case)
  2. For `parent-field` The parent may not exist, like in the case for a `query`.
