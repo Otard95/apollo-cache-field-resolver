@@ -7,9 +7,10 @@ export type Node = GraphQLObjectType | GraphQLNonNull<GraphQLObjectType>
 
 export type CacheKeyGenerator<
     P extends Record<string, unknown>,
+    C extends Record<string, unknown>,
     A extends Record<string, unknown>
 > = (
-  option: CacheOptions<P, A>,
+  option: CacheOptions<P, C, A>,
   info: GraphQLResolveInfo,
   parent: P,
   args: A
@@ -17,15 +18,17 @@ export type CacheKeyGenerator<
 
 export interface CacheOptions<
     P extends Record<string, unknown>,
+    C extends Record<string, unknown>,
     A extends Record<string, unknown>
     > {
   nodeId?: (parent: P, args: A) => string | null
   cacheKeyType?: CacheKeyType
-  cacheKey?: CacheKeyGenerator<P, A>
+  cacheKey?: CacheKeyGenerator<P, C, A>
   cacheHint?: (
     context: Record<string | number | symbol, unknown>,
     info: GraphQLResolveInfo
-  ) => CacheHint;
-  cache?: KeyValueCache | ((context: unknown) => KeyValueCache)
+  ) => CacheHint
+  sessionId?: string | ((context: C) => string)
+  cache?: KeyValueCache | ((context: C) => KeyValueCache)
 }
 
