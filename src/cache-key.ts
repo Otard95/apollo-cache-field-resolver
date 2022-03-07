@@ -5,6 +5,7 @@ import {
   GraphQLResolveInfo,
   Kind
 } from 'graphql'
+import { GraphQLNullableType } from 'graphql/type/definition'
 import {
   CacheOptions,
   CacheKeyGenerator,
@@ -12,16 +13,21 @@ import {
   Node
 } from './types'
 
+const isObjectType = (type: GraphQLOutputType): type is GraphQLObjectType =>
+  type.constructor.name === 'GraphQLObjectType'
+const isNonNullType = (type: GraphQLOutputType): type is GraphQLNonNull<GraphQLNullableType> =>
+  type.constructor.name === 'GraphQLNonNull'
+
 const isNode = (type: GraphQLOutputType): type is Node => {
-  let retType = type instanceof GraphQLNonNull ? type.ofType : type
-  if (retType instanceof GraphQLObjectType
-    && retType.astNode?.directives?.some(dir => dir.name.value === 'key'))
+  let nullableType = isNonNullType(type) ? type.ofType : type
+  if (isObjectType(nullableType)
+    && nullableType.astNode?.directives?.some(dir => dir.name.value === 'key'))
     return true
   return false
 }
 
 const getNodeObject = (node: Node): GraphQLObjectType => {
-  if (node instanceof GraphQLNonNull)
+  if (isNonNullType(node))
     return node.ofType
   return node
 }
