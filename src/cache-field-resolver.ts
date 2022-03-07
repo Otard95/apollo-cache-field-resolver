@@ -1,8 +1,7 @@
-import { GraphQLFieldResolver } from 'graphql'
 import { Required } from 'utility-types'
 import { InMemoryCache } from './cache'
 import { resolveCacheKey } from './cache-key'
-import { CacheOptions } from './types'
+import { CacheOptions, GQLResolver } from './types'
 
 const defaultOptions = {
   cacheKey: resolveCacheKey,
@@ -15,24 +14,26 @@ const cacheFieldResolver = <
   A extends Record<string, unknown>,
   R extends Promise<unknown>
 >(
-  ...cacheFieldArgs: [CacheOptions<P, C, A>, GraphQLFieldResolver<P, C, A, R>]
-                   | [GraphQLFieldResolver<P, C, A, R>]
-): GraphQLFieldResolver<P, C, A, R> => {
+  ...cacheFieldArgs: [CacheOptions<P, C, A>, GQLResolver<P, C, A, R>]
+                   | [GQLResolver<P, C, A, R>]
+): GQLResolver<P, C, A, R> => {
 
-  const cacheResolver = (async (parent, args, context, info): Promise<unknown> => {
+  const cacheResolver = (async (parent, args, context, info) => {
 
     let opts: CacheOptions<P, C, A> | null = null
-    let resolver: GraphQLFieldResolver<P, C, A, R>
+    let resolver: GQLResolver<P, C, A, R>
     if (cacheFieldArgs.length === 1) {
       resolver = cacheFieldArgs[0]
     } else {
       opts = cacheFieldArgs[0]
       resolver = cacheFieldArgs[1]
     }
-    const options: CacheOptions<P, C, A> & Pick<
-      Required<CacheOptions<P, C, A>>,
-      'cacheKey' | 'cache'
-    > = { ...defaultOptions, ...opts }
+    const options = { ...defaultOptions, ...opts } as
+      CacheOptions<P, C, A>
+      & Pick<
+        Required<CacheOptions<P, C, A>>,
+        'cacheKey' | 'cache'
+      >
 
     const cache = typeof options.cache === 'function'
       ? options.cache(context)
@@ -72,7 +73,7 @@ const cacheFieldResolver = <
         await cache.set(cacheKey, res, maxAge)
     }
 
-  }) as GraphQLFieldResolver<P, C, A, R>
+  }) as GQLResolver<P, C, A, R>
 
   return cacheResolver
 }

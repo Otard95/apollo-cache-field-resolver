@@ -4,6 +4,20 @@ import { KeyValueCache } from './cache'
 
 export type CacheKeyType = 'node-id' | 'parent-field'
 export type Node = GraphQLObjectType | GraphQLNonNull<GraphQLObjectType>
+// We define this because the `TResult` type arg was not introduced until
+// `graphql@16`(https://github.com/graphql/graphql-js/commit/e88c58efc3cc56ec2353ef3153bd1f2302fdd629)
+export type GQLResolver<
+  TSource,
+  TContext,
+  TArgs = { [argName: string]: any },
+  TResult = unknown
+> = (
+  source: TSource,
+  args: TArgs,
+  context: TContext,
+  info: GraphQLResolveInfo,
+) => TResult
+
 
 export type CacheKeyGenerator<
     P extends Record<string, unknown>,
