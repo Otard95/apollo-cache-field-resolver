@@ -1,6 +1,6 @@
 import { Required } from 'utility-types'
 import { InMemoryCache } from './cache'
-import { resolveCacheKey } from './cache-key'
+import { getKeyFields, resolveCacheKey } from './cache-key'
 import { CacheOptions, GQLResolver } from './types'
 
 const defaultOptions = {
@@ -50,21 +50,23 @@ const cacheFieldResolver = <
     const cacheKey =
       options.cacheKey(options, info, parent, args)
 
-    if (cacheKey !== null) {
-      let cachedValue: unknown | null
-      if (typeof sessionId === 'string' && sessionId.length > 0)
-        cachedValue = await cache.get(`${cacheKey}.${sessionId}`)
-      else
-        cachedValue = await cache.get(cacheKey)
-      if (cachedValue !== undefined && cachedValue !== null) return cachedValue
+    if (cacheKey === null || cacheKey.length <= 0) {
+      (options.logger || console).warn();
+      return resolver(parent, args, context, info)
     }
+
+    let cachedValue: unknown | null
+    if (typeof sessionId === 'string' && sessionId.length > 0)
+      cachedValue = await cache.get(`${cacheKey}.${sessionId}`)
+    else
+      cachedValue = await cache.get(cacheKey)
+    if (cachedValue !== undefined && cachedValue !== null) return cachedValue
 
     const res = await resolver(parent, args, context, info)
 
     const maxAge = cacheHint && cacheHint.maxAge
     if (
-      typeof cacheKey === 'string' && cacheKey.length > 0
-      && res !== null && res !== undefined
+      res !== null && res !== undefined
       && typeof maxAge === 'number' && maxAge > 0
     ) {
       if (typeof sessionId === 'string' && sessionId.length > 0)

@@ -1,5 +1,5 @@
 import { GraphQLObjectType, GraphQLNonNull, GraphQLResolveInfo } from 'graphql'
-import { CacheHint } from 'apollo-server-types'
+import { CacheHint, Logger } from 'apollo-server-types'
 import { KeyValueCache } from './cache'
 
 export type CacheKeyType = 'node-id' | 'parent-field'
@@ -44,4 +44,5 @@ export interface CacheOptions<
   ) => CacheHint
   sessionId?: string | ((context: C) => string)
   cache?: KeyValueCache | ((context: C) => KeyValueCache)
+  logger?: Logger
 }
