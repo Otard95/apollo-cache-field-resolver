@@ -57,7 +57,7 @@ const cacheFieldResolver = <
 
     let cachedValue: unknown | null
     if (typeof sessionId === 'string' && sessionId.length > 0)
-      cachedValue = await cache.get(`${cacheKey}.${sessionId}`)
+      cachedValue = await cache.get(`<${sessionId}>${cacheKey}`)
     else
       cachedValue = await cache.get(cacheKey)
     if (cachedValue !== undefined && cachedValue !== null) return cachedValue
@@ -70,7 +70,7 @@ const cacheFieldResolver = <
       && typeof maxAge === 'number' && maxAge > 0
     ) {
       if (typeof sessionId === 'string' && sessionId.length > 0)
-        await cache.set(`${cacheKey}.${sessionId}`, res, maxAge)
+        await cache.set(`<${sessionId}>${cacheKey}`, res, maxAge)
       else
         await cache.set(cacheKey, res, maxAge)
     }
