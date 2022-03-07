@@ -75,6 +75,8 @@ const cacheFieldResolver = <
         await cache.set(cacheKey, res, maxAge)
     }
 
+    return res
+
   }) as GQLResolver<P, C, A, R>
 
   return cacheResolver
