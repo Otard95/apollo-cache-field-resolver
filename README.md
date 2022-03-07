@@ -34,3 +34,9 @@ For example:
      to find a single field with type `ID!`, and/or finding a key `id` or
      containing `id`(respecting snake/camel etc. case)
  2. For `parent-field` The parent may not exist, like in the case for a `query`.
+
+## TODO
+
+ - [ ] Prettify generated `.d.ts`
+ - [ ] Improve `ID!` resolving for `node-id` cache key variant
+ - [ ] Improve Docs
