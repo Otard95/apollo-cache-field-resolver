@@ -43,18 +43,15 @@ export class InMemoryCache implements KeyValueCache {
 }
 
 type RedisKeyValueCacheOptions = {
-  ttl?: number;
   client: Redis;
 };
 export class RedisKeyValueCache implements KeyValueCache {
-  private readonly ttl: number;
   private readonly client: Redis;
 
   /**
     * Instantiate a new RedisKeyValueCache.
     */
   constructor(readonly options: RedisKeyValueCacheOptions) {
-    this.ttl = options.ttl || Infinity;
     this.client = options.client;
   }
 
