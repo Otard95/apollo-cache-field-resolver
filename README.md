@@ -40,3 +40,4 @@ For example:
  - [ ] Prettify generated `.d.ts`
  - [ ] Improve `ID!` resolving for `node-id` cache key variant
  - [ ] Improve Docs
+ - [ ] Validate resulting `node`'s id with resolved cache key

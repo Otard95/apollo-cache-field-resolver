@@ -1,6 +1,6 @@
 import { Required } from 'utility-types'
 import { InMemoryCache } from './cache'
-import { getKeyFields, resolveCacheKey } from './cache-key'
+import { resolveCacheKey } from './cache-key'
 import { CacheOptions, GQLResolver } from './types'
 
 const defaultOptions = {
@@ -51,7 +51,7 @@ const cacheFieldResolver = <
       options.cacheKey(options, info, parent, args)
 
     if (cacheKey === null || cacheKey.length <= 0) {
-      (options.logger || console).warn();
+      (options.logger || console).warn('[cacheFieldResolver](SKIP) could not create cache key')
       return resolver(parent, args, context, info)
     }
 
