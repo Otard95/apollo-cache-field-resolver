@@ -31,7 +31,7 @@ export class InMemoryCache implements KeyValueCache {
     * @param ttl The time to live(seconds) for the key.
     */
   public set(key: string, value: unknown, ttl: number): void {
-    this.cache.set(key, { value, ttl: Date.now() + ttl });
+    this.cache.set(key, { value, ttl: Date.now() + (ttl * 1000) });
   }
 
   /**
