@@ -88,7 +88,7 @@ const resolveId = <
     if (keyFields === null)
       return null
     if (keyFields in parent && typeof parent[keyFields] === 'string')
-      return args[keyFields] as string
+      return parent[keyFields] as string
   }
 
   return null
