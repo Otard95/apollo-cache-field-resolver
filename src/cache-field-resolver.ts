@@ -1,5 +1,5 @@
 import { Required } from 'utility-types'
-import { InMemoryCache } from './cache'
+import InMemoryCache from "./in-memory-cache"
 import { resolveCacheKey } from './cache-key'
 import { CacheOptions, GQLResolver } from './types'
 

@@ -1,6 +1,6 @@
 import { KeyValueCache } from "./types";
 
-export class InMemoryCache implements KeyValueCache {
+export default class InMemoryCache implements KeyValueCache {
   private cache: Map<string, {value: unknown; ttl: number;}> = new Map();
 
   /**
