@@ -98,6 +98,7 @@ export const resolveCacheKey: CacheKeyGenerator<
   Record<string, unknown>, Record<string, unknown>, Record<string, unknown>
 > = (
   options: CacheOptions<{}, {}, {}>,
+  sessionId,
   info,
   parent,
   args
@@ -111,19 +112,18 @@ export const resolveCacheKey: CacheKeyGenerator<
     return null
 
   if (cacheKeyType === 'node-id') {
-
-    const {returnType} = info
-    const node = getNodeObject(getNodeObject(returnType as Node))
-    return `${node.name}.${nodeId}`
-
-  } else {
-
-    const {parentType} = info
-    const node = getNodeObject(parentType)
-    return `${node.name}{${nodeId}}.${info.fieldName}(${JSON.stringify(
-      args
-    )})`
-
+    const { returnType } = info
+    const node = getNullableType(returnType)
+    if (isNode(node))
+      return `${sessionId ? `<${sessionId}>` : ''}${node.name}.${nodeId}`
   }
+
+  const { parentType } = info
+  return `${sessionId
+    ? `<${sessionId}>`
+    : ''
+    }${parentType.name}{${nodeId}}.${info.fieldName}(${JSON.stringify(
+    args
+  )})`
 }
 

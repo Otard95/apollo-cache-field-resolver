@@ -48,18 +48,14 @@ const cacheFieldResolver = <
       : null
 
     const cacheKey =
-      options.cacheKey(options, info, parent, args)
+      options.cacheKey(options, sessionId, info, parent, args)
 
     if (cacheKey === null || cacheKey.length <= 0) {
       (options.logger || console).warn('[cacheFieldResolver](SKIP) could not create cache key')
       return resolver(parent, args, context, info)
     }
 
-    let cachedValue: unknown | null
-    if (typeof sessionId === 'string' && sessionId.length > 0)
-      cachedValue = await cache.get(`<${sessionId}>${cacheKey}`)
-    else
-      cachedValue = await cache.get(cacheKey)
+    let cachedValue = await cache.get(cacheKey)
     if (cachedValue !== undefined && cachedValue !== null) return cachedValue
 
     const res = await resolver(parent, args, context, info)
@@ -69,10 +65,7 @@ const cacheFieldResolver = <
       res !== null && res !== undefined
       && typeof maxAge === 'number' && maxAge > 0
     ) {
-      if (typeof sessionId === 'string' && sessionId.length > 0)
-        await cache.set(`<${sessionId}>${cacheKey}`, res, maxAge)
-      else
-        await cache.set(cacheKey, res, maxAge)
+      await cache.set(cacheKey, res, maxAge)
     }
 
     return res

@@ -23,6 +23,7 @@ export type CacheKeyGenerator<
     A extends Record<string, unknown>
 > = (
   option: CacheOptions<P, C, A>,
+  sessionId: string | null,
   info: GraphQLResolveInfo,
   parent: P,
   args: A
