@@ -7,18 +7,17 @@ import {
 } from 'graphql'
 import { GraphQLNullableType } from 'graphql/type/definition'
 import {
-  CacheOptions,
   CacheKeyGenerator,
   CacheKeyType,
   Node
 } from './types'
 
-const isObjectType = (type: GraphQLOutputType): type is GraphQLObjectType =>
+export const isObjectType = (type: GraphQLOutputType): type is GraphQLObjectType =>
   type.constructor.name === 'GraphQLObjectType'
-const isNonNullType = (type: GraphQLOutputType): type is GraphQLNonNull<GraphQLNullableType> =>
+export const isNonNullType = (type: GraphQLOutputType): type is GraphQLNonNull<GraphQLNullableType> =>
   type.constructor.name === 'GraphQLNonNull'
 
-const isNode = (type: GraphQLOutputType): type is Node => {
+export const isNode = (type: GraphQLOutputType): type is Node => {
   let nullableType = isNonNullType(type) ? type.ofType : type
   if (isObjectType(nullableType)
     && nullableType.astNode?.directives?.some(dir => dir.name.value === 'key'))
@@ -26,13 +25,15 @@ const isNode = (type: GraphQLOutputType): type is Node => {
   return false
 }
 
-const getNodeObject = (node: Node): GraphQLObjectType => {
-  if (isNonNullType(node))
-    return node.ofType
-  return node
+export const getNullableType = <T extends GraphQLOutputType>(
+  nonNullType: GraphQLNonNull<T> | T
+): T => {
+  if (isNonNullType(nonNullType))
+    return nonNullType.ofType as T
+  return nonNullType
 }
 
-const getKeyFields = (type: GraphQLObjectType): string | null => {
+export const getKeyFields = (type: GraphQLObjectType): string | null => {
   const keyFields = type.astNode?.directives
     ?.find(dir => dir.name.value === 'key')?.arguments
     ?.find(arg => arg.name.value === 'fields')?.value
@@ -41,7 +42,14 @@ const getKeyFields = (type: GraphQLObjectType): string | null => {
   return keyFields.value
 }
 
-const resolveIdForNode = <
+export const resolveCacheKeyType = (info: GraphQLResolveInfo): CacheKeyType => {
+  const {returnType} = info
+  if (isNode(returnType))
+    return 'node-id'
+  return 'parent-field'
+}
+
+export const resolveIdForNode = <
   P extends Record<string, unknown>,
   A extends Record<string, unknown>
 >(
@@ -50,7 +58,7 @@ const resolveIdForNode = <
   parent: P,
   args: A
 ): string | null => {
-  const keyFields = getKeyFields(getNodeObject(returnType))
+  const keyFields = getKeyFields(getNullableType(returnType))
   if (keyFields === null)
     return null
   if (fieldName === '__resolveReference') {
@@ -63,14 +71,7 @@ const resolveIdForNode = <
   return null
 }
 
-const resolveCacheKeyType = (info: GraphQLResolveInfo): CacheKeyType => {
-  const {returnType} = info
-  if (isNode(returnType))
-    return 'node-id'
-  return 'parent-field'
-}
-
-const resolveId = <
+export const resolveId = <
   P extends Record<string, unknown>,
   A extends Record<string, unknown>
 >(
@@ -97,7 +98,7 @@ const resolveId = <
 export const resolveCacheKey: CacheKeyGenerator<
   Record<string, unknown>, Record<string, unknown>, Record<string, unknown>
 > = (
-  options: CacheOptions<{}, {}, {}>,
+  options,
   sessionId,
   info,
   parent,
@@ -116,14 +117,16 @@ export const resolveCacheKey: CacheKeyGenerator<
     const node = getNullableType(returnType)
     if (isNode(node))
       return `${sessionId ? `<${sessionId}>` : ''}${node.name}.${nodeId}`
+  } else {
+    const { parentType } = info
+    if (isNode(parentType))
+      return `${sessionId
+        ? `<${sessionId}>`
+        : ''
+        }${parentType.name}{${nodeId}}.${info.fieldName}(${JSON.stringify(
+          args
+        )})`
   }
 
-  const { parentType } = info
-  return `${sessionId
-    ? `<${sessionId}>`
-    : ''
-    }${parentType.name}{${nodeId}}.${info.fieldName}(${JSON.stringify(
-    args
-  )})`
+  return null
 }
-

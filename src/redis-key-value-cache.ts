@@ -18,11 +18,9 @@ export default class RedisKeyValueCache implements KeyValueCache {
     * Get the value for a key, or null if not found.
     */
   public async get<T = unknown>(key: string): Promise<T | null> {
-    const res = await this.client.get(key);
-    if (!res) {
-      return null;
-    }
-    return JSON.parse(res);
+    const value = await this.client.get(key);
+    if (!value) return null;
+    return JSON.parse(value);
   }
 
   /**
