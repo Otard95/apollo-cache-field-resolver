@@ -1,5 +1,6 @@
 import { Redis } from "ioredis";
-import { KeyValueCache } from "./types";
+import { KeyValueCache, KeyValueCacheSetOptions } from 'apollo-server-caching'
+// import { KeyValueCache } from "./types";
 
 type RedisKeyValueCacheOptions = {
   client: Redis;
@@ -17,9 +18,9 @@ export default class RedisKeyValueCache implements KeyValueCache {
   /**
     * Get the value for a key, or null if not found.
     */
-  public async get<T = unknown>(key: string): Promise<T | null> {
+  public async get<T = unknown>(key: string): Promise<T | undefined> {
     const value = await this.client.get(key);
-    if (!value) return null;
+    if (!value) return;
     return JSON.parse(value);
   }
 
@@ -27,14 +28,16 @@ export default class RedisKeyValueCache implements KeyValueCache {
     * Set the value for a key.
     * @param key The key to set.
     * @param value The value to set.
-    * @param ttl The time to live(seconds) for the key.
+    * @param ttlOrOptions The time to live(seconds) for the key.
     */
-  public async set(key: string, value: unknown, ttl: number): Promise<void> {
+  public async set(key: string, value: unknown, ttlOrOptions?: number | KeyValueCacheSetOptions): Promise<void> {
+    const timeToLive = typeof ttlOrOptions === 'number' ? ttlOrOptions : ttlOrOptions?.ttl;
+    if (!timeToLive) return;
     await this.client.set(
       key,
       JSON.stringify(value),
       'EX',
-      ttl
+      timeToLive,
     );
   }
 

@@ -1,5 +1,6 @@
 import { GraphQLObjectType, GraphQLNonNull, GraphQLResolveInfo } from 'graphql'
-import { CacheHint, Logger, ValueOrPromise } from 'apollo-server-types'
+import { CacheHint, Logger } from 'apollo-server-types'
+import { KeyValueCache } from 'apollo-server-caching'
 
 export type CacheKeyType = 'node-id' | 'parent-field'
 export type Node = GraphQLObjectType | GraphQLNonNull<GraphQLObjectType>
@@ -28,12 +29,6 @@ export type CacheKeyGenerator<
   parent: P,
   args: A
 ) => (string | null)
-
-export interface KeyValueCache {
-  get<T = unknown>(key: string): ValueOrPromise<T | null>;
-  set(key: string, value: unknown, ttl: number): ValueOrPromise<void>;
-  delete(key: string): ValueOrPromise<void>;
-}
 
 export interface CacheOptions<
     P extends Record<string, unknown>,
