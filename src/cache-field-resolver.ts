@@ -78,7 +78,7 @@ function cacheFieldResolver<
       let cachedValue = await cache.get(cacheKey)
       if (cachedValue !== undefined) {
         const parsedValue = JSON.parse(cachedValue)
-        if (parsedValue !== undefined && parsedValue !== null) {
+        if (parsedValue !== undefined && (options.cacheNull || parsedValue !== null)) {
           (options.logger || console).debug(`[cacheFieldResolver] cache hit on key ${cacheKey}`)
           return parsedValue
         }
