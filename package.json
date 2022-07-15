@@ -15,7 +15,7 @@
     "test:watch": "jest --watch",
     "test": "jest",
     "jest:cache-clear": "jest --clearCache",
-    "prepublish": "npm run build"
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
