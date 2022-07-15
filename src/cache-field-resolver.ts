@@ -78,9 +78,15 @@ function cacheFieldResolver<
       let cachedValue = await cache.get(cacheKey)
       if (cachedValue !== undefined) {
         const parsedValue = JSON.parse(cachedValue)
-        if (parsedValue !== undefined && parsedValue !== null) return parsedValue
+        if (parsedValue !== undefined && parsedValue !== null) {
+          (options.logger || console).debug(`[cacheFieldResolver] cache hit on key ${cacheKey}`)
+          return parsedValue
+        }
       }
     } catch (e) {}
+    finally {
+      (options.logger || console).debug(`[cacheFieldResolver] cache miss on key ${cacheKey}`)
+    }
 
     const res = await resolverFn(parent, args, context, info)
 
@@ -94,6 +100,7 @@ function cacheFieldResolver<
       )
       && typeof maxAge === 'number' && maxAge > 0
     ) {
+      (options.logger || console).debug(`[cacheFieldResolver] cached value on key ${cacheKey}`)
       await cache.set(cacheKey, JSON.stringify(res), { ttl: maxAge })
     }
 
