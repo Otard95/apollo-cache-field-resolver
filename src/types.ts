@@ -9,18 +9,18 @@ export type Node = GraphQLObjectType | GraphQLNonNull<GraphQLObjectType>
 export type GQLResolver<
   TSource,
   TContext,
-  TArgs = { [argName: string]: any },
+  TArgs = { [argName: string]: unknown },
   TResult = unknown
 > = (
   source: TSource,
   args: TArgs,
   context: TContext,
   info: GraphQLResolveInfo,
-) => TResult
+) => TResult | Promise<TResult>
 
 export type CacheKeyGenerator<
     P extends Record<string, unknown>,
-    C extends Record<string, unknown>,
+    C,
     A extends Record<string, unknown>
 > = (
   option: CacheOptions<P, C, A>,
@@ -31,15 +31,15 @@ export type CacheKeyGenerator<
 ) => (string | null)
 
 export interface CacheOptions<
-    P extends Record<string, unknown>,
-    C extends Record<string, unknown>,
-    A extends Record<string, unknown>
+    P extends { [argName: string]: unknown },
+    C,
+    A extends { [argName: string]: unknown },
     > {
   nodeId?: (parent: P, args: A) => string | null
   cacheKeyType?: CacheKeyType
   cacheKey?: CacheKeyGenerator<P, C, A>
   cacheHint?: (
-    context: Record<string | number | symbol, unknown>,
+    context: C,
     info: GraphQLResolveInfo
   ) => CacheHint
   sessionId?: string | ((context: C) => string)
