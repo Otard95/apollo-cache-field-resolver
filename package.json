@@ -14,7 +14,8 @@
     "build": "tsc -p .",
     "test:watch": "jest --watch",
     "test": "jest",
-    "jest:cache-clear": "jest --clearCache"
+    "jest:cache-clear": "jest --clearCache",
+    "publish": "npm run build && npm publish"
   },
   "repository": {
     "type": "git",
