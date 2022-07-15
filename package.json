@@ -3,6 +3,13 @@
   "version": "0.1.0",
   "description": "A wrapper for your apollo graphql resolvers that uses your cache hints to cache the field",
   "main": "dist/index.js",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md",
+    "package-lock.json",
+    "package.json"
+  ],
   "scripts": {
     "build": "tsc -p .",
     "test:watch": "jest --watch",
