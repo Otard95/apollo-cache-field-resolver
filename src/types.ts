@@ -35,6 +35,7 @@ export interface CacheOptions<
     C,
     A extends { [argName: string]: unknown },
     > {
+  cacheNull?: boolean
   nodeId?: (parent: P, args: A) => string | null
   cacheKeyType?: CacheKeyType
   cacheKey?: CacheKeyGenerator<P, C, A>

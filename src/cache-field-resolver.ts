@@ -5,7 +5,8 @@ import { CacheOptions, GQLResolver } from './types'
 
 const defaultOptions = {
   cacheKey: resolveCacheKey,
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
+  cacheNull: false,
 }
 
 function cacheFieldResolver<
@@ -85,7 +86,12 @@ function cacheFieldResolver<
 
     const maxAge = cacheHint && cacheHint.maxAge
     if (
-      res !== null && res !== undefined
+      (
+        options.cacheNull
+        || (
+          res !== null && res !== undefined
+        )
+      )
       && typeof maxAge === 'number' && maxAge > 0
     ) {
       await cache.set(cacheKey, JSON.stringify(res), { ttl: maxAge })
