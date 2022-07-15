@@ -83,9 +83,9 @@ function cacheFieldResolver<
           return parsedValue
         }
       }
-    } catch (e) {}
-    finally {
       (options.logger || console).debug(`[cacheFieldResolver] cache miss on key ${cacheKey}`)
+    } catch (e) {
+      (options.logger || console).debug(`[cacheFieldResolver] cache value parse error ${cacheKey}`)
     }
 
     const res = await resolverFn(parent, args, context, info)
