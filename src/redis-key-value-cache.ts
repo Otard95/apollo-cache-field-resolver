@@ -1,4 +1,4 @@
-import { Redis } from "ioredis";
+import Redis from "ioredis";
 import { KeyValueCache, KeyValueCacheSetOptions } from 'apollo-server-caching'
 // import { KeyValueCache } from "./types";
 
@@ -48,4 +48,3 @@ export default class RedisKeyValueCache implements KeyValueCache {
     await this.client.del(key);
   }
 }
-
