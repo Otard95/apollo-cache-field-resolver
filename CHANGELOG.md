@@ -1,3 +1,16 @@
+# [0.5.0](https://github.com/Otard95/apollo-cache-field-resolver/compare/v0.4.0...v0.5.0) (2022-09-14)
+
+
+### Bug Fixes
+
+* `nodeId` receives context & rename resolver ([ac5ae9b](https://github.com/Otard95/apollo-cache-field-resolver/commit/ac5ae9b11a156d5d3ae5bd2f811d938081b49345))
+
+
+### Features
+
+* Revert to function overrides ([1556d02](https://github.com/Otard95/apollo-cache-field-resolver/commit/1556d029477c9a03475540d45d97b7878f664499))
+* Session if validation ([77b47a5](https://github.com/Otard95/apollo-cache-field-resolver/commit/77b47a54d81939783596cb9886f9a56b809d31e2))
+
 # [0.4.0](https://github.com/Otard95/apollo-cache-field-resolver/compare/v0.3.0...v0.4.0) (2022-09-14)
 
 
