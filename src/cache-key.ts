@@ -108,14 +108,18 @@ export const resolveCacheKey: CacheKeyGenerator = (
     ? options.nodeId(parent, args, context)
     : resolveId(cacheKeyType, info, parent, args)
 
-  if (nodeId === null)
+  if (nodeId === null) {
+    options.logger?.warn('[fieldCacheResolver](cacheKey) Could not resolve node id')
     return null
+  }
 
   if (cacheKeyType === 'node-id') {
     const { returnType } = info
     const node = getNullableType(returnType)
     if (isNode(node))
       return `${sessionId ? `<${sessionId}>` : ''}${node.name}.${nodeId}`
+
+    options.logger?.warn('[fieldCacheResolver](cacheKey) Return type is not a node')
   } else {
     const { parentType } = info
     if (isNode(parentType))
@@ -125,6 +129,8 @@ export const resolveCacheKey: CacheKeyGenerator = (
         }${parentType.name}{${nodeId}}.${info.fieldName}(${JSON.stringify(
           args
         )})`
+
+    options.logger?.warn('[fieldCacheResolver](cacheKey) Parent type is not a node')
   }
 
   return null
