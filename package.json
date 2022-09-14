@@ -13,7 +13,8 @@
   "scripts": {
     "build": "tsc -p .",
     "test:watch": "jest --watch",
-    "test": "jest",
+    "test": "npm run test:types && jest",
+    "test:types": "tsc --noEmit",
     "jest:cache-clear": "jest --clearCache",
     "prepare": "npm run build"
   },

@@ -95,18 +95,17 @@ export const resolveId = <
   return null
 }
 
-export const resolveCacheKey: CacheKeyGenerator<
-  Record<string, unknown>, Record<string, unknown>, Record<string, unknown>
-> = (
+export const resolveCacheKey: CacheKeyGenerator = (
   options,
   sessionId,
   info,
   parent,
-  args
+  args,
+  context
 ): (string | null) => {
   const cacheKeyType = options.cacheKeyType || resolveCacheKeyType(info)
   const nodeId = typeof options.nodeId === 'function'
-    ? options.nodeId(parent, args)
+    ? options.nodeId(parent, args, context)
     : resolveId(cacheKeyType, info, parent, args)
 
   if (nodeId === null)

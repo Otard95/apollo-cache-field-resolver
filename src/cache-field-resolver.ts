@@ -11,7 +11,7 @@ const defaultOptions = {
   logger: console,
 }
 
-const cacheFieldResolver = <
+const fieldCacheResolver = <
   P extends { [argName: string]: unknown },
   C,
   A extends { [argName: string]: unknown },
@@ -40,7 +40,7 @@ const cacheFieldResolver = <
     const sessionId = generateSessionId(options.sessionId, context, cacheHint)
 
     const cacheKey =
-      options.cacheKey(options, sessionId, info, parent, args)
+      options.cacheKey(options, sessionId, info, parent, args, context)
 
     if (cacheKey === null || cacheKey.length <= 0) {
       options.logger.warn('[cacheFieldResolver](SKIP) could not create cache key')
@@ -85,4 +85,4 @@ const cacheFieldResolver = <
 
 }
 
-export default cacheFieldResolver
+export default fieldCacheResolver

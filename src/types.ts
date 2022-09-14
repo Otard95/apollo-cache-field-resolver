@@ -9,8 +9,8 @@ export type Node = GraphQLObjectType | GraphQLNonNull<GraphQLObjectType>
 export type GQLResolver<
   TSource,
   TContext,
-  TArgs = { [argName: string]: unknown },
-  TResult = unknown
+  TArgs,
+  TResult,
 > = (
   source: TSource,
   args: TArgs,
@@ -19,24 +19,25 @@ export type GQLResolver<
 ) => TResult | Promise<TResult>
 
 export type CacheKeyGenerator<
-    P extends Record<string, unknown>,
-    C,
-    A extends Record<string, unknown>
+    P extends {} = {},
+    C extends {} = {},
+    A extends {} = {},
 > = (
   option: CacheOptions<P, C, A>,
   sessionId: string | null,
   info: GraphQLResolveInfo,
   parent: P,
-  args: A
+  args: A,
+  context: C
 ) => (string | null)
 
 export interface CacheOptions<
-    P extends { [argName: string]: unknown },
-    C,
-    A extends { [argName: string]: unknown },
-    > {
+  P extends {} = {},
+  C extends {} = {},
+  A extends {} = {},
+> {
   cacheNull?: boolean
-  nodeId?: (parent: P, args: A) => string | null
+  nodeId?: (parent: P, args: A, context: C) => string | null
   cacheKeyType?: CacheKeyType
   cacheKey?: CacheKeyGenerator<P, C, A>
   cacheHint?: (
