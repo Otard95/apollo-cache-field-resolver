@@ -424,6 +424,7 @@ export default () => {
                           info,
                           parent,
                           args,
+                          {},
                         )
                       ).toEqual(expectKey(
                         expected,
