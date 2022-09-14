@@ -60,11 +60,7 @@ function cacheFieldResolver<
     const cacheHint = options.cacheHint
       ? options.cacheHint(context, info)
       : info.cacheControl.cacheHint
-    const sessionId = options.sessionId
-      ? typeof options.sessionId === 'function'
-        ? options.sessionId(context)
-        : options.sessionId
-      : null
+    const sessionId = generateSessionId(options.sessionId, context, cacheHint)
 
     const cacheKey =
       options.cacheKey(options, sessionId, info, parent, args)
