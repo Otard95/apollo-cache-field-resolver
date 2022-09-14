@@ -44,7 +44,7 @@ export interface CacheOptions<
     context: C,
     info: GraphQLResolveInfo
   ) => CacheHint
-  sessionId?: string | ((context: C) => string)
+  sessionId?: (context: C) => string | null
   cache?: KeyValueCache | ((context: C) => KeyValueCache)
   logger?: Logger
 }

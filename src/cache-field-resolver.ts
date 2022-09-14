@@ -39,6 +39,11 @@ const fieldCacheResolver = <
       : info.cacheControl.cacheHint
     const sessionId = generateSessionId(options.sessionId, context, cacheHint)
 
+    if (sessionId === null) {
+      options.logger.warn('[fieldCacheResolver](SKIP) a session id is required for non-public cache')
+      return resolverFn(parent, args, context, info)
+    }
+
     const cacheKey =
       options.cacheKey(options, sessionId, info, parent, args, context)
 
