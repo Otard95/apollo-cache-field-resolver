@@ -18,6 +18,12 @@ export type GQLResolver<
   info: GraphQLResolveInfo,
 ) => TResult | Promise<TResult>
 
+export type ReferenceResolver<TResult, TReference, TContext> = (
+  reference: TReference,
+  context: TContext,
+  info: GraphQLResolveInfo
+) => Promise<TResult> | TResult;
+
 export type CacheKeyGenerator<
     P extends {} = {},
     C extends {} = {},
