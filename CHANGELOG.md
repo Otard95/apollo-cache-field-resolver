@@ -1,3 +1,11 @@
+# [0.6.0](https://github.com/Otard95/apollo-cache-field-resolver/compare/v0.5.0...v0.6.0) (2022-09-15)
+
+
+### Features
+
+* Create referenceCacheResolver ([ff12f19](https://github.com/Otard95/apollo-cache-field-resolver/commit/ff12f19a95d76d217a6e139b65893a5c4266cc97))
+* Typing improvment ([241a8c2](https://github.com/Otard95/apollo-cache-field-resolver/commit/241a8c25fffbc8c78ed5012623d40ea4e3991b0e))
+
 # [0.5.0](https://github.com/Otard95/apollo-cache-field-resolver/compare/v0.4.0...v0.5.0) (2022-09-14)
 
 
