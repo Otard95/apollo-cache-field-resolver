@@ -12,50 +12,50 @@ const defaultOptions = {
 }
 
 function fieldCacheResolver<
-  P extends { [argName: string]: unknown },
-  C,
-  A extends { [argName: string]: unknown },
-  R
+  Result,
+  Parent extends {} = {},
+  Context extends {} = {},
+  Args extends {} = {},
 >(
-  resolver: GQLResolver<P, C, A, R>
-): GQLResolver<P, C, A, R>;
+  resolver: GQLResolver<Parent, Context, Args, Result>
+): GQLResolver<Parent, Context, Args, Result>;
 function fieldCacheResolver<
-  P extends { [argName: string]: unknown },
-  C,
-  A extends { [argName: string]: unknown },
-  R
+  Result,
+  Parent extends {} = {},
+  Context extends {} = {},
+  Args extends {} = {},
 >(
-  opts: CacheOptions<P, C, A>,
-  resolver: GQLResolver<P, C, A, R>
-): GQLResolver<P, C, A, R>;
+  opts: CacheOptions<Parent, Context, Args>,
+  resolver: GQLResolver<Parent, Context, Args, Result>
+): GQLResolver<Parent, Context, Args, Result>;
 
 function fieldCacheResolver<
-  P extends { [argName: string]: unknown },
-  C,
-  A extends { [argName: string]: unknown },
-  R
+  Result,
+  Parent extends {} = {},
+  Context extends {} = {},
+  Args extends {} = {},
 >(
-  optsOrResolver: CacheOptions<P, C, A> | GQLResolver<P, C, A, R>,
-  resolver?: GQLResolver<P, C, A, R>
-): GQLResolver< P, C, A, R> {
-  let opts: CacheOptions<P, C, A> | null = null
-  let resolverFn: GQLResolver<P, C, A, R>
+  optsOrResolver: CacheOptions<Parent, Context, Args> | GQLResolver<Parent, Context, Args, Result>,
+  resolver?: GQLResolver<Parent, Context, Args, Result>
+): GQLResolver<Parent, Context, Args, Result> {
+  let opts: CacheOptions<Parent, Context, Args> | null = null
+  let resolverFn: GQLResolver<Parent, Context, Args, Result>
 
   if (resolver === undefined) {
-    resolverFn = optsOrResolver as GQLResolver<P, C, A, R>
+    resolverFn = optsOrResolver as GQLResolver<Parent, Context, Args, Result>
   } else {
-    opts = optsOrResolver as CacheOptions<P, C, A>
-    resolverFn = resolver as GQLResolver<P, C, A, R>
+    opts = optsOrResolver as CacheOptions<Parent, Context, Args>
+    resolverFn = resolver as GQLResolver<Parent, Context, Args, Result>
   }
 
   const options = { ...defaultOptions, ...(opts || {}) } as
-    CacheOptions<P, C, A>
+    CacheOptions<Parent, Context, Args>
     & Pick<
-      Required<CacheOptions<P, C, A>>,
+      Required<CacheOptions<Parent, Context, Args>>,
       'cacheKey' | 'cache' | 'logger'
     >
 
-  const cacheResolver: GQLResolver<P, C, A, R> = async (parent, args, context, info) => {
+  const cacheResolver: GQLResolver<Parent, Context, Args, Result> = async (parent, args, context, info) => {
 
     const cache = typeof options.cache === 'function'
       ? options.cache(context)
