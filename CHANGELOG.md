@@ -1,3 +1,15 @@
+# [0.7.0](https://github.com/Otard95/apollo-cache-field-resolver/compare/v0.6.0...v0.7.0) (2022-09-16)
+
+
+### Bug Fixes
+
+* Dependencies ([a525358](https://github.com/Otard95/apollo-cache-field-resolver/commit/a5253588c14260fe146ec62f6c69d68d8f107922))
+
+
+### Features
+
+* Improve defautl options and create mutators ([2b41afc](https://github.com/Otard95/apollo-cache-field-resolver/commit/2b41afcf550d07c01d5b31056331d1dc545fa2e2))
+
 # [0.6.0](https://github.com/Otard95/apollo-cache-field-resolver/compare/v0.5.0...v0.6.0) (2022-09-15)
 
 
