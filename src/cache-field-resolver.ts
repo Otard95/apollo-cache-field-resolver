@@ -1,15 +1,7 @@
 import { Required } from 'utility-types'
-import InMemoryCache from "./in-memory-cache"
-import { resolveCacheKey } from './cache-key'
 import { CacheOptions, GQLResolver } from './types'
 import generateSessionId from './session'
-
-const defaultOptions = {
-  cacheKey: resolveCacheKey,
-  cache: new InMemoryCache(),
-  cacheNull: false,
-  logger: console,
-}
+import { defaultOptions } from './options'
 
 function fieldCacheResolver<
   Result,
@@ -48,14 +40,14 @@ function fieldCacheResolver<
     resolverFn = resolver as GQLResolver<Parent, Context, Args, Result>
   }
 
-  const options = { ...defaultOptions, ...(opts || {}) } as
-    CacheOptions<Parent, Context, Args>
-    & Pick<
-      Required<CacheOptions<Parent, Context, Args>>,
-      'cacheKey' | 'cache' | 'logger'
-    >
-
   const cacheResolver: GQLResolver<Parent, Context, Args, Result> = async (parent, args, context, info) => {
+
+    const options = { ...defaultOptions, ...(opts || {}) } as
+      CacheOptions<Parent, Context, Args>
+      & Pick<
+        Required<CacheOptions<Parent, Context, Args>>,
+        'cacheKey' | 'cache' | 'logger'
+      >
 
     const cache = typeof options.cache === 'function'
       ? options.cache(context)
