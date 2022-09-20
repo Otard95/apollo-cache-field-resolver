@@ -1,3 +1,11 @@
+# [0.8.0](https://github.com/Otard95/apollo-cache-field-resolver/compare/v0.7.0...v0.8.0) (2022-09-20)
+
+
+### Features
+
+* Add exports to index ([679b968](https://github.com/Otard95/apollo-cache-field-resolver/commit/679b96883596a0b222e7b36fea95e9e51c28e8b7))
+* Extract creating node-id and parent-field cache keys ([ea6480f](https://github.com/Otard95/apollo-cache-field-resolver/commit/ea6480fe79ae9ccbbf91a7a15b02cb6be17a3aa5))
+
 # [0.7.0](https://github.com/Otard95/apollo-cache-field-resolver/compare/v0.6.0...v0.7.0) (2022-09-16)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "apollo-field-cache-resolver",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "A wrapper for your apollo graphql resolvers that uses your cache hints to cache the field",
   "main": "dist/index.js",
   "files": [
