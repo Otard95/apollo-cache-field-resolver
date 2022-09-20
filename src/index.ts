@@ -6,4 +6,6 @@ export {
   appendDefaultOption,
   clearDefaultOption,
 } from './options'
+export { default as parentFieldCacheKey } from './parent-field-cache-key'
+export { default as nodeIdCacheKey } from './node-id-cache-key'
 export { typeDef } from './schema'

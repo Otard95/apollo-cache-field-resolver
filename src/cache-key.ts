@@ -6,6 +6,8 @@ import {
   Kind
 } from 'graphql'
 import { GraphQLNullableType } from 'graphql/type/definition'
+import nodeIdCacheKey from './node-id-cache-key'
+import parentFieldCacheKey from './parent-field-cache-key'
 import {
   CacheKeyGenerator,
   CacheKeyType,
@@ -117,18 +119,13 @@ export const resolveCacheKey: CacheKeyGenerator = (
     const { returnType } = info
     const node = getNullableType(returnType)
     if (isNode(node))
-      return `${sessionId ? `<${sessionId}>` : ''}${node.name}.${nodeId}`
+      return nodeIdCacheKey(node.name, nodeId, sessionId)
 
     options.logger?.warn('[fieldCacheResolver](cacheKey) Return type is not a node')
   } else {
     const { parentType } = info
     if (isNode(parentType))
-      return `${sessionId
-        ? `<${sessionId}>`
-        : ''
-        }${parentType.name}{${nodeId}}.${info.fieldName}(${JSON.stringify(
-          args
-        )})`
+      return parentFieldCacheKey(parentType.name, nodeId, info.fieldName, args, sessionId)
 
     options.logger?.warn('[fieldCacheResolver](cacheKey) Parent type is not a node')
   }
